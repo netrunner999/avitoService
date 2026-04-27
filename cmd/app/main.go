@@ -1,6 +1,9 @@
 package main
 
 import (
+	httpDelivery "avitoService/internal/avitoService/delivery/http"
+	"avitoService/internal/avitoService/repository"
+	"avitoService/internal/avitoService/usecase"
 	"context"
 	"log"
 	"net/http"
@@ -8,28 +11,24 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-	httpDelivery "avitoService/internal/avitoService/delivery/http"
-	"avitoService/internal/avitoService/repository"
-	"avitoService/internal/avitoService/usecase"
 )
 
 func main() {
-	// создаем слои
 	repo := repository.New()
 	uc := usecase.New(repo)
 	h := httpDelivery.New(uc)
 
-	// регаем маршрут Get /test
+	// NOTE: регаем маршрут Get /test
 	mux := http.NewServeMux()
 	mux.HandleFunc("/test", h.Test())
 
-	// конфигурируем http-сервер
+	// NOTE: конфигурация http-сервер
 	srv := &http.Server{
-		Addr: ":8080",
+		Addr:    ":8080",
 		Handler: mux,
 	}
 
-	// канал для получения сигнала остановки приложения
+	// NOTE: буфферизованный канал
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
@@ -40,11 +39,10 @@ func main() {
 		}
 	}()
 
-	// ждем сигнала остановки
+	// NOTE: ждем сигнала ОС в главной горутине, если сигнала нет горутина блокируется до его появления
 	<-quit
 	log.Println("Shutting down the server...")
 
-	// даем 5 секунд на завершение работы
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -53,4 +51,3 @@ func main() {
 	}
 	log.Println("Server stopped gracefully.")
 }
-

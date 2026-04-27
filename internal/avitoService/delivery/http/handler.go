@@ -1,11 +1,11 @@
 package http
 
 import (
-	"net/http"
 	avitoService "avitoService/internal/avitoService"
+	"net/http"
 )
 
-// структура http-слоя, хранит ссылку на бизнес логику
+// NOTE: структура http-слоя, хранит ссылку на бизнес логику
 type handler struct {
 	u avitoService.UseCase
 }
@@ -14,7 +14,7 @@ func New(u avitoService.UseCase) *handler {
 	return &handler{u: u}
 }
 
-// хэндлер Get /test
+// NOTE: хэндлер Get /test
 func (h *handler) Test() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		msg, err := h.u.GetTestMessage(r.Context())

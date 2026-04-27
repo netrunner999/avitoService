@@ -5,17 +5,17 @@ import (
 	"net/http"
 )
 
-// интерфейс слоя http-хэндлеров
+// NOTE: интерфейс слоя http-хэндлеров
 type Handler interface {
 	Test() http.HandlerFunc
 }
 
-// интерфейс бизнес-логики
+// NOTE: интерфейс бизнес-логики
 type UseCase interface {
 	GetTestMessage(ctx context.Context) (string, error)
 }
 
-// интерфейс базы данных (слой данных)
+// NOTE: интерфейс базы данных (слой данных)
 type Repository interface {
 	GetTestMessage(ctx context.Context) (string, error)
 }
