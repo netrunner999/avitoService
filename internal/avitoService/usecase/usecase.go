@@ -1,17 +1,17 @@
 package usecase
 
 import (
-	avitoService "avitoService/internal/avitoService"
+	domain "avitoService/internal/avitoService/domain"
 	"context"
 )
 
 // NOTE: реализация интерфейса UseCase через структуру useCase
 type useCase struct {
-	repo avitoService.Repository
+	repo domain.Repository
 }
 
 // NOTE: конструктор useCase, возвращает указатель на useCase(!)
-func New(repo avitoService.Repository) *useCase {
+func New(repo domain.Repository) *useCase {
 	return &useCase{repo: repo}
 }
 

@@ -1,16 +1,16 @@
 package http
 
 import (
-	avitoService "avitoService/internal/avitoService"
+	"avitoService/internal/avitoService/domain"
 	"net/http"
 )
 
 // NOTE: структура http-слоя, хранит ссылку на бизнес логику
 type handler struct {
-	u avitoService.UseCase
+	u domain.UseCase
 }
 
-func New(u avitoService.UseCase) *handler {
+func New(u domain.UseCase) *handler {
 	return &handler{u: u}
 }
 
